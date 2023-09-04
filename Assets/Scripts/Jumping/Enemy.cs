@@ -31,8 +31,22 @@ public class Enemy : MonoBehaviour
         transform.localScale = new Vector3(dir, 1, 1);
 
         // 이동 속도
-        speed = Random.Range(5, 8f); // 10 ~ 15
+        speed = Random.Range(5, 8f); // 5 ~ 8
         anim.speed = 1 + (speed - 5) / 3; // 1 ~ 2
+
+        // 오브젝트 위치를 Screen 좌표로 전환
+        Vector3 worldPos = transform.position;
+        Vector3 pos = Camera.main.WorldToScreenPoint(worldPos);
+
+        // 이동 방향 조사
+        if (dir == -1)
+        {
+            pos.x = Screen.width + 60;
+        }
+        else
+        {
+            pos.x = -60;
+        }
     }
 
     void CheckAlive()
@@ -42,7 +56,8 @@ public class Enemy : MonoBehaviour
 
         Vector2 pos = Camera.main.WorldToScreenPoint(worldsPos);
         if ((dir == -1 && pos.x < -60) || // 왼쪽으로 벗어남
-            (dir == 1 && pos.x > Screen.width + 60)) { // 오른쪽으로 벗어남
+            (dir == 1 && pos.x > Screen.width + 60)) // 오른쪽으로 벗어남
+        {
             Destroy(gameObject);
         }
     }
