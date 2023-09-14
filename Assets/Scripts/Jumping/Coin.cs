@@ -24,10 +24,23 @@ public class Coin : MonoBehaviour
     void InitCoin()
     {
         // 오브젝트 초기화
-        /*kind = int.Parse(transform.name.Substring(4, 1));*/
+        kind = int.Parse(transform.name.Substring(4, 1));
+    }
 
-        // 오브젝트 스프라이트 설정
-        /*Sprite[] sprites = Resources.LoadAll<Sprite>("Coin");
-        GetComponent<SpriteRenderer>().sprite = sprites[kind];*/
+    void GetCoin()
+    {
+        // GameManager에 통지
+        GameObject.Find("GameManager").SendMessage("GetCoin", kind);
+
+        GetComponent<AudioSource>().Play();
+
+        GameObject score = Instantiate(Resources.Load("Score")) as GameObject;
+        score.SendMessage("SetScore", 100 + kind * 100); // 100 ~ 300
+        score.transform.position = transform.position;
+
+        // 0.5초 후 삭제
+        Destroy(GetComponent<Collider>());
+        GetComponent<SpriteRenderer>().sprite = null;
+        Destroy(gameObject, 0.5f);
     }
 }

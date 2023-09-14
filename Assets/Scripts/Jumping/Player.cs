@@ -8,16 +8,21 @@ public class Player : MonoBehaviour
     Transform checkPoint;
 
     float moveSpeed = 8f;
-    float jumpSpeed = 20f;
+    float jumpSpeed = 25f;
     float gravity = 19f;
 
     Vector3 moveDir;
     bool isDead = false;
 
+    GameManager manager;
+
     void Start()
     {
         anim = GetComponent<Animator>();
         checkPoint = transform.Find("CheckPoint");
+
+        manager = FindObjectOfType<GameManager>();
+        // manager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     void Update()
@@ -32,7 +37,7 @@ public class Player : MonoBehaviour
     {
         // 캐릭터가 화면 아래를 벗어났는지 확인
         Vector2 pos = Camera.main.WorldToScreenPoint(transform.position);
-        if (pos.y < -100)
+        if (pos.y < -300)
         {
             isDead = true;
             return;
@@ -48,6 +53,18 @@ public class Player : MonoBehaviour
             keyValue = 0;
         }
 
+        // 게임 오버
+        if (pos.y < -100)
+        {
+            isDead = true;
+            manager.SendMessage("SetGameOver");
+            return;
+        }
+
+        if (manager.isMobile)
+        {
+            keyValue = manager.buttonAxis;
+        }
         moveDir.x = keyValue * moveSpeed;
 
         // 중력
@@ -71,8 +88,27 @@ public class Player : MonoBehaviour
         // 조사한 오브젝트가 발판이면 점프 속도 설정
         if (hit.collider != null && hit.collider.tag == "Foothold")
         {
+            Debug.Log("점프");
             moveDir.y = jumpSpeed;
         }
+    }
 
+    // 충돌 처리
+    void OnTriggerEnter2D (Collider2D coll)
+    {
+        Transform other = coll.transform;
+
+        switch (other.tag)
+        {
+            case "Foothold":
+                moveDir.y = jumpSpeed;
+                break;
+            case "Enemy":
+                other.SendMessage("DropEnemy");
+                break;
+            case "Item":
+                other.SendMessage("GetCoin");
+                break;
+        }
     }
 }

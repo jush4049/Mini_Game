@@ -26,7 +26,7 @@ public class CameraTracking : MonoBehaviour
 
         // 카메라 높이 조정
         Vector3 pos = transform.position;
-        pos.y = cy - 0.1f;
+        pos.y = cy + 0.05f;
         transform.position = pos;
 
         // 최대 높이 갱신

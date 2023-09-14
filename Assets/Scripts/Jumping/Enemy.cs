@@ -61,4 +61,26 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    // 충돌 처리
+    void DropEnemy()
+    {
+        // GameManager에 통지
+        FindObjectOfType<GameManager>().SendMessage("EnemyStrike");
+
+        GetComponent<AudioSource>().Play();
+        transform.localEulerAngles = new Vector3(0, 0, 180);
+        //anim.enabled = false;
+
+        // 콜라이터 제거 및 중력 적용
+        Destroy(GetComponent<Collider2D>());
+        GetComponent<Rigidbody2D>().gravityScale = 1;
+        speed = 0;
+
+        // 점수
+        GameObject score = Instantiate(Resources.Load("Score")) as GameObject;
+        score.transform.position = transform.position;
+
+        score.SendMessage("SetScore", -100);
+    }
 }
