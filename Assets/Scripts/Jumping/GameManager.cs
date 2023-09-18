@@ -185,9 +185,9 @@ public class GameManager : MonoBehaviour
         Cursor.visible = true;
 
         // 배경음악 변경
-        /*music.clip = Resources.Load("GameOver", typeof(AudioClip)) as AudioClip;
-        music.loop = false;
-        music.Play();*/
+        music.clip = Resources.Load("Jumping_GameOver_BGM", typeof(AudioClip)) as AudioClip;
+        // music.loop = false;
+        music.Play();
     }
 
     public void OnButtonClick (GameObject button)
