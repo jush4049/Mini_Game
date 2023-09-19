@@ -72,7 +72,7 @@ public class Enemy : MonoBehaviour
         transform.localEulerAngles = new Vector3(0, 0, 180);
         //anim.enabled = false;
 
-        // 콜라이터 제거 및 중력 적용
+        // 콜라이더 제거 및 중력 적용
         Destroy(GetComponent<Collider2D>());
         GetComponent<Rigidbody2D>().gravityScale = 1;
         speed = 0;

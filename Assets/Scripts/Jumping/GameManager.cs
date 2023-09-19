@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
         MakeFoothold();
         MakeEnemy();
         MakeItem();
-
+        if (score > 50000) MakeBomb();
         if (!isGameOver) SetScore();
     }
 
@@ -116,6 +116,19 @@ public class GameManager : MonoBehaviour
 
         GameObject item = Instantiate(Resources.Load("Item")) as GameObject;
         item.name = "Item" + Random.Range(0, 3);
+        item.transform.position = pos;
+    }
+
+    void MakeBomb()
+    {
+        int count = GameObject.FindGameObjectsWithTag("Bomb").Length;
+        if (count > 0 || Random.Range(0, 1000) < 980) return;
+
+        Vector3 pos = spawnPoint.position;
+        pos.x = Random.Range(-worldSize.x * 1f, worldSize.x * 1f);
+        pos.y += Random.Range(0.25f, 1.75f);
+
+        GameObject item = Instantiate(Resources.Load("Bomb")) as GameObject;
         item.transform.position = pos;
     }
 

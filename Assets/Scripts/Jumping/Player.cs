@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    GameObject player;
     Animator anim;
     Transform checkPoint;
 
@@ -22,7 +23,7 @@ public class Player : MonoBehaviour
         checkPoint = transform.Find("CheckPoint");
 
         manager = FindObjectOfType<GameManager>();
-        // manager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        player = GameObject.Find("Player");
     }
 
     void Update()
@@ -72,9 +73,6 @@ public class Player : MonoBehaviour
 
         // 이동
         transform.Translate(moveDir * Time.deltaTime);
-
-        // 애니메이션
-        //anim.SetFloat("velocity", moveDir.y);
     }
 
     void CheckFoothold()
@@ -108,6 +106,10 @@ public class Player : MonoBehaviour
                 break;
             case "Item":
                 other.SendMessage("GetCoin");
+                break;
+            case "Bomb":
+                Destroy(player.GetComponent<Rigidbody2D>());
+                other.SendMessage("FireBomb");
                 break;
         }
     }

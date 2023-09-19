@@ -8,6 +8,7 @@ TagManager:
   - Foothold
   - Enemy
   - Item
+  - Bomb
   layers:
   - Default
   - TransparentFX
