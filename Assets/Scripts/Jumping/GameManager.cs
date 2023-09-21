@@ -36,11 +36,15 @@ public class GameManager : MonoBehaviour
     int dir; // -1 : 왼쪽 버튼, 1 : 오른쪽 버튼
     bool isGameOver; // 게임 오버 확인
 
+    float timer;
+    public Text startTimer;
+    bool isTimer = true;
 
     void Awake()
     {
         InitGame();
         InitWidget();
+        timer = 3;
     }
 
     void Update()
@@ -50,6 +54,19 @@ public class GameManager : MonoBehaviour
         MakeItem();
         if (score > 50000) MakeBomb();
         if (!isGameOver) SetScore();
+        if (isTimer) Timer();
+    }
+
+    void Timer()
+    {
+        startTimer.text = string.Format("{0:N0}", timer);
+        timer -= Time.deltaTime;
+        if (timer < 0)
+        {
+            FindObjectOfType<Player>().SendMessage("PlayerStart");
+            isTimer = false;
+            Destroy(startTimer);
+        }
     }
 
     // 게임 초기화
@@ -65,7 +82,7 @@ public class GameManager : MonoBehaviour
         }
 
         // 스폰 포인트
-        spawnPoint = GameObject.Find ("SpawnPoint").transform;
+        spawnPoint = GameObject.Find("SpawnPoint").transform;
 
         // 화면의 크기
         Vector3 screenSize = new Vector3(Screen.width, Screen.height);
@@ -210,7 +227,7 @@ public class GameManager : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
                 break;
             case "QuitButton":
-                Application.Quit();
+                SceneManager.LoadScene("Lobby");
                 break;
         }
     }

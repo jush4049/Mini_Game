@@ -24,6 +24,8 @@ public class Player : MonoBehaviour
 
         manager = FindObjectOfType<GameManager>();
         player = GameObject.Find("Player");
+
+        player.GetComponent<Player>().enabled = false;
     }
 
     void Update()
@@ -32,6 +34,12 @@ public class Player : MonoBehaviour
 
         CheckFoothold();
         Move();
+    }
+
+    // 스크립트 활성화
+    void PlayerStart()
+    {
+        player.GetComponent<Player>().enabled = true;
     }
 
     void Move()
